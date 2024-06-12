@@ -1,43 +1,37 @@
 import React from "react";
-
+import axios from "axios";
 
 
 export default function GenerateDech() {
     const toPrint = () => {
-        // Open a new window for printing
-        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
-        
-        // Create a copy of the component element for printing
-        const elem = document.getElementById("fichPrint").cloneNode(true);
-    
-        // Remove the button from the copied element
-        elem.querySelector("#impBtn").remove();
-    
-        // Apply CSS styles to ensure table borders
-        elem.querySelectorAll("table, th, td").forEach(el => {
-            el.style.border = "1px solid black";
-            el.style.padding = "8px";
-            el.style.textAlign = "center";
+        axios.get('http://localhost:8080/api/print', {
+            responseType: 'blob', // Important
+        })
+        .then(response => {
+            // Create a blob from the response
+            const blob = new Blob([response.data], { type: 'application/pdf' });
+
+            // Create a link element
+            const link = document.createElement('a');
+
+            // Set the URL and filename
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'document.pdf';
+
+            // Append the link to the body
+            document.body.appendChild(link);
+
+            // Programmatically click the link to trigger the download
+            link.click();
+
+            // Remove the link from the document
+            document.body.removeChild(link);
+        })
+        .catch(error => {
+            console.error('Error generating the PDF', error);
         });
-    
-        // Write the copied element content to the new window
-        mywindow.document.write('<html><head><title>Fiche</title>');
-        mywindow.document.write('<style>.flex{display:flex;}.justify-between{justify-content: space-between;}.text-center{text-align: center;}</style>');
-        mywindow.document.write('</head><body>');
-        mywindow.document.write(elem.innerHTML);
-        mywindow.document.write('</body></html>');
-    
-        // Close the HTML document
-        mywindow.document.close();
-    
-        // Focus on the new window
-        mywindow.focus();
-    
-        // Print the document
-        mywindow.print();
-    
-        return true;
-    }
+    };
+
     
 
     

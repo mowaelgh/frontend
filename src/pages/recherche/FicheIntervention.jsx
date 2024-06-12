@@ -1,32 +1,37 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 export default function FicheIntervention({ data }) {
     
     const toPrint = () => {
-        // Open a new window for printing
-        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+        axios.get('http://localhost:8080/api/print', {
+            responseType: 'blob', // Important
+        })
+        .then(response => {
+            // Create a blob from the response
+            const blob = new Blob([response.data], { type: 'application/pdf' });
 
-        // Create a copy of the component element for printing
-        const elem = document.getElementById("fichPrint").cloneNode(true);
+            // Create a link element
+            const link = document.createElement('a');
 
-        // Remove the button from the copied element
-        elem.querySelector("#impBtn").remove();
+            // Set the URL and filename
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'document.pdf';
 
-        // Write the copied element content to the new window
-        mywindow.document.write('<html><head><title>Fiche</title>');
-        mywindow.document.write('<style>.flex{display:flex;}.justify-between{justify-content: space-between;}.text-center{text-align: center;}</style>');
-        mywindow.document.write('</head><body>');
-        mywindow.document.write(elem.innerHTML);
-        mywindow.document.write('</body></html>');
+            // Append the link to the body
+            document.body.appendChild(link);
 
-        mywindow.document.close(); // necessary for IE >= 10
-        mywindow.focus(); // necessary for IE >= 10*/
+            // Programmatically click the link to trigger the download
+            link.click();
 
-        mywindow.print();
-        // mywindow.close();
+            // Remove the link from the document
+            document.body.removeChild(link);
+        })
+        .catch(error => {
+            console.error('Error generating the PDF', error);
+        });
+    };
 
-        return true;
-    }
     // Check if the device is under warranty
     const isUnderWarranty = data.device.guarantee > 0;
 
@@ -56,13 +61,13 @@ export default function FicheIntervention({ data }) {
             <div className="flex justify-between mb-4">
                 {/* Left side */}
                 <div className="w-1/2 pr-4">
-                    <p className="text-sm font-medium text-gray-700">Nom : <span className="font-bold">{data.client.firstname}</span></p>
+                    <p className="text-sm font-medium text-gray-700">Nom : <span className="font-bold">{data.client.firstName}</span></p>
                     <p className="text-sm font-medium text-gray-700">Num Cin/passeport : <span className="font-bold">{data.client.cin}</span></p>
                     <p className="text-sm font-medium text-gray-700">Num Tel 1 : <span className="font-bold">{data.client.phoneNumber1}</span></p>
                 </div>
                 {/* Right side */}
                 <div className="w-1/2 pl-4">
-                    <p className="text-sm font-medium text-gray-700">Prénom : <span className="font-bold">{data.client.lastname}</span></p>
+                    <p className="text-sm font-medium text-gray-700">Prénom : <span className="font-bold">{data.client.lastName}</span></p>
                     <p className="text-sm font-medium text-gray-700">Num Tel 2 : <span className="font-bold">{data.client.phoneNumber2}</span></p>
                     <p className="text-sm font-medium text-gray-700">Email : <span className="font-bold">{data.client.email}</span></p>
                 </div>
