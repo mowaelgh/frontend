@@ -22,6 +22,7 @@ export default function RecherchePage() {
         numTel2: ""
     });
     const [interventionData, setInterventionData] = useState({
+        boutique: "",
         description: "",
         batterie: "",
         etatTerminal: "",
@@ -80,6 +81,7 @@ export default function RecherchePage() {
             const response = await axios.post('http://localhost:8080/client/addClient', clientData);
             const interventionDataToSend = {
                 imei: searchResultData.imei, // Assuming you have this data in searchResultData
+                boutique: interventionData.boutique,
                 batterie: interventionData.batterie,
                 etatTerminal: interventionData.etatTerminal,
                 terminalDePret: interventionData.terminalDePret,

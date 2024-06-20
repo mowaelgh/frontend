@@ -1,4 +1,4 @@
-export default function SearchResult({ action, data }) {
+export default function SearchResult({ action, data, hasDischargeId }) {
     const remainingWarranty = Math.max(data.guarantee - Math.floor((Date.now() - new Date(data.purchase_date).getTime()) / (1000 * 60 * 60 * 24 * 30)), 0);
 
     return (
@@ -17,7 +17,13 @@ export default function SearchResult({ action, data }) {
                 <hr className="w-20 border-2 border-gray-600" />
             </div>
             <div className="flex justify-center">
-                <button onClick={() => action()} className="bg-green-500 px-4 py-2.5 rounded-lg  text-white text-sm font-bold">Creer Fichier</button>
+            <button
+                    className="bg-blue-500 px-4 py-2.5 rounded-lg text-white text-sm font-bold"
+                    disabled={!hasDischargeId}
+                >
+                    Remplacer Terminal
+                </button>
+                <button onClick={() => action()} className="bg-green-500 px-4 py-2.5 rounded-lg text-white text-sm font-bold">Creer Fichier</button>
             </div>
         </div>
 

@@ -68,6 +68,14 @@ export default function FileCard({ onCancel, action, handleClientInfoChange, han
         setDescription(event.target.value);
         handleInterventionDataChange("description", event.target.value);
     };
+    const handleNextClick = (e) => {
+        e.preventDefault();
+        const confirmed = window.confirm("are you sure want to proceed ?");
+        if (confirmed==true) {
+            console.log("confirmed",confirmed)
+            action(e);
+        }
+    };
 
     const cancel = () => {
         onCancel()
@@ -76,7 +84,7 @@ export default function FileCard({ onCancel, action, handleClientInfoChange, han
     return (
         <div className="mt-4 w-full bg-white p-4 rounded-lg">
             <h2 className="font-bold mb-4">Informations client</h2>
-            <form onSubmit={action}>
+            <form onSubmit={handleNextClick}>
                 {/* First row of inputs */}
                 <div className="flex mb-4">
                     <div className="w-1/3 pr-2 flex flex-col">

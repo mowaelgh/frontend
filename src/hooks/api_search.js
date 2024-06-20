@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 const SearchByImei = async (imei) => {
     try {
         const response = await axios.get(`http://localhost:8080/device/getDeviceById/${imei}`);
@@ -48,5 +49,15 @@ const AddIntervention = async (data) => {
     const response = await axios.get(`http://localhost:8080/device/getDeviceById/${data.imei}`);
     return { success: true, data }
 }
+const getRepairType = async (id) => {
+    try {
+        const response = await axios.get(`http://localhost:8080/intervention/getRepairType/${id}`);
+        return { success: true, data: response.data };
+    } catch (error) {
+        console.error('Error fetching repair type:', error);
+        return { success: false, data: error.message };
+    }
+};
 
-export { SearchByImei, AddIntervention, Searchfichsav, DetailfichSav, updateFich }
+
+export { SearchByImei, AddIntervention, Searchfichsav, DetailfichSav, updateFich, getRepairType}

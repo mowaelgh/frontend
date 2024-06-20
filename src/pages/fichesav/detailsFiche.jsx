@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { updateFich } from "../../hooks/api_search";
+import { updateFich, getRepairType } from "../../hooks/api_search";
 
 export default function DetailsFiche({ info }) {
     const [editableData, setEditableData] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
-        setEditableData(
-            [
-                info.createdAt || "",
-                info.lieu || "",
-                info.status || "",
-                info.etat || "",
-                info.utilisateur || "",
-                info.commentaire || ""
-            ])
-    }, [info])
+        const fetchRepairType = async () => {
+            const r = await getRepairType(info.id);
+            if (r.success) {
+                setEditableData([
+                    info.createdAt || "",
+                    info.lieu || "",
+                    r.data || "", // Use the fetched repair type
+                    info.etat || "",
+                    info.utilisateur || "",
+                    info.commentaire || ""
+                ]);
+            } else {
+                alert(r.data);
+            }
+        };
+
+        fetchRepairType();
+    }, [info]);
 
     const handleInputChange = (index, event) => {
         const newData = [...editableData];
@@ -26,14 +34,22 @@ export default function DetailsFiche({ info }) {
     const handleSaveClick = async () => {
         setIsEditing(false);
 
-        console.log(info);
-        const r = await updateFich();
+        const updatedData = {
+            createdAt: editableData[0],
+            boutique: editableData[1], // Update according to your UI input or backend response
+            repairType: editableData[2],
+            etat: editableData[3],
+            utilisateur: editableData[4],
+            commentaire: editableData[5]
+        };
+
+        const r = await updateFich(info.id, updatedData);
         if (r.success) {
             console.log('Fetched data:', r.data);
             setEditableData([
                 r.data.createdAt || "",
-                r.data.lieu || "",
-                r.data.status || "",
+                r.data.boutique || "", // Ensure to update with the correct field from backend response
+                r.data.repairType || "",
                 r.data.etat || "",
                 r.data.utilisateur || "",
                 r.data.commentaire || ""

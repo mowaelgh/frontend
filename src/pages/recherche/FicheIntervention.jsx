@@ -3,34 +3,32 @@ import axios from "axios";
 
 export default function FicheIntervention({ data }) {
     
-    const toPrint = () => {
-        axios.get('http://localhost:8080/api/print', {
-            responseType: 'blob', // Important
-        })
-        .then(response => {
-            // Create a blob from the response
-            const blob = new Blob([response.data], { type: 'application/pdf' });
+     
+const toPrint = () => {
+    // Open a new window for printing
+    var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
-            // Create a link element
-            const link = document.createElement('a');
+    // Create a copy of the component element for printing
+    const elem = document.getElementById("fichPrint").cloneNode(true);
 
-            // Set the URL and filename
-            link.href = window.URL.createObjectURL(blob);
-            link.download = 'document.pdf';
+    // Remove the button from the copied element
+    elem.querySelector("#impBtn").remove();
 
-            // Append the link to the body
-            document.body.appendChild(link);
+    // Write the copied element content to the new window
+    mywindow.document.write('<html><head><title>Fiche</title>');
+    mywindow.document.write('<style>.flex{display:flex;}.justify-between{justify-content: space-between;}.text-center{text-align: center;}</style>');
+    mywindow.document.write('</head><body>');
+    mywindow.document.write(elem.innerHTML);
+    mywindow.document.write('</body></html>');
 
-            // Programmatically click the link to trigger the download
-            link.click();
+    mywindow.document.close(); // necessary for IE >= 10
+    mywindow.focus(); // necessary for IE >= 10*/
 
-            // Remove the link from the document
-            document.body.removeChild(link);
-        })
-        .catch(error => {
-            console.error('Error generating the PDF', error);
-        });
-    };
+    mywindow.print();
+    // mywindow.close();
+
+    return true;
+}
 
     // Check if the device is under warranty
     const isUnderWarranty = data.device.guarantee > 0;
@@ -41,7 +39,7 @@ export default function FicheIntervention({ data }) {
     return (
         <div id="fichPrint" className="w-full bg-white p-4 rounded-lg">
             <div className="flex items-center justify-between mb-4">
-                <img src="/assets/img/logo1.png" alt="Logo" className="mr-4" style={{ width: "150px", height: "auto" }} />
+                <img src="/assets/img/logoorange.png" alt="Logo" className="mr-4" style={{ width: "150px", height: "auto" }} />
                 {/* Title */}
                 <h2 style={{ width: "100%" }} className="font-bold text-center text-2xl flex-grow py-5">Fiche d'Intervention</h2>
             </div>
@@ -53,7 +51,7 @@ export default function FicheIntervention({ data }) {
                 {/* Date and Boutique */}
                 <div>
                     <p className="text-sm font-medium text-gray-700">Date : <span className="font-bold">{data.createdAt}</span></p>
-                    <p className="text-sm font-medium text-gray-700">Boutique : <span className="font-bold">{data.userInfo}</span></p>
+                    <p className="text-sm font-medium text-gray-700">Boutique : <span className="font-bold">{data.device?.boutique}</span></p>
                 </div>
             </div>
             {/* Informations client section */}

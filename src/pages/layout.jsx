@@ -69,8 +69,10 @@ const SideMenu = ({ open }) => {
                             >
                                 <div>{React.createElement(menu?.icon, { size: "20" })}</div>
                                 <h2
-                                    // style={{ transitionDelay: `${i + 3}00ms` }}
-                                    className={`whitespace-pre text-sm text-black }`}
+                                    style={{ transitionDelay: `${i + 3}00ms` }}
+                                    className={`whitespace-pre duration-500 text-sm text-black ${
+                                        !open && "opacity-0 translate-x-28 overflow-hidden"
+                                    }`}
                                 >
                                     {menu?.name}
                                 </h2>
@@ -105,7 +107,14 @@ const SideMenu = ({ open }) => {
                                                     className="no-underline flex items-center text-sm gap-2 text-black font-medium  hover:bg-orange-400 py-2 px-2 rounded-md"
                                                 >
                                                     <div>{React.createElement(menu?.icon, { size: "20" })}</div>
-                                                    {open && <h2 className={`whitespace-pre duration-500 text-sm text-black`}>{menu?.name}</h2>}
+                                                    <h2
+                                                        style={{ transitionDelay: `${i + 3}00ms` }}
+                                                        className={`whitespace-pre duration-500 text-sm text-black ${
+                                                            !open && "opacity-0 translate-x-28 overflow-hidden"
+                                                        }`}
+                                                    >
+                                                        {e?.name}
+                                                    </h2>
                                                 </Link>
                                             );
                                         })}
@@ -119,11 +128,17 @@ const SideMenu = ({ open }) => {
                         <Link
                             to={menu?.link}
                             key={i}
-                            className="p-2 no-underline flex justify-start items-center text-sm gap-2 text-black font-medium  hover:bg-orange-300 rounded-md"
+                            className="p-2 no-underline flex items-center text-sm gap-2 text-black font-medium  hover:bg-orange-300 rounded-md"
                         >
                             <div>{React.createElement(menu?.icon, { size: "20" })}</div>
-                            {open && <h2 className={`whitespace-pre duration-500 text-sm text-black`}> {menu?.name} </h2>}
-
+                            <h2
+                                style={{ transitionDelay: `${i + 3}00ms` }}
+                                className={`whitespace-pre duration-500 text-sm text-black ${
+                                    !open && "opacity-0 translate-x-28 overflow-hidden"
+                                }`}
+                            >
+                                {menu?.name}
+                            </h2>
                         </Link>
                     );
                 }
@@ -143,15 +158,15 @@ export default function Layout({ children }) {
         <div className="flex flex-col min-h-screen">
             <div className="bg-black p-5 flex justify-between items-center px-4">
                 <div className="flex items-center gap-5">
-                    <img src="/assets/img/logo1.png" alt="" className="w-36 h-16" />
+                    <img src="/assets/img/logoorange.png" alt="" className="w-46 h-20" />
                     <SlArrowLeft
                         className="w-4 h-4 text-white cursor-pointer ml-2" // Added margin-left
                         onClick={toggleSidebar}
                     />
                 </div>
                 <div className="flex gap-5">
-
-                    <Link to={"/"}>
+                    
+                <Link to={"/"}>
                         <svg
                             className="w-9 h-9 text-white"
                             aria-hidden="true"
@@ -170,7 +185,6 @@ export default function Layout({ children }) {
                             />
                         </svg>
                     </Link>
-
                     <svg
                         className="w-9 h-9 text-white"
                         aria-hidden="true"
@@ -215,7 +229,7 @@ export default function Layout({ children }) {
                     <div className="flex-1 p-2">{children}</div>
                     <div className="p-3 bg-black text-white flex justify-between">
                         <p>
-                            copyright &copy; <b className="text-orange-600">Billcom Consulting</b>
+                            copyright &copy; <b className="text-orange-600">Orange Tunisie</b>
                         </p>
                         <div className="flex gap-2">
                             <svg
