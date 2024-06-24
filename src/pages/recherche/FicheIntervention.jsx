@@ -78,7 +78,7 @@ const toPrint = () => {
                     <p className="text-sm font-medium text-gray-700">Date d'achat : <span className="font-bold">{data.device.purchase_date}</span></p>
                     <p className="text-sm font-medium text-gray-700">Marque : <span className="font-bold">{data.device.brand}</span></p>
                     <p className="text-sm font-medium text-gray-700">Num serie/IMEI : <span className="font-bold">{data.device.imei}</span></p>
-                    <p className="text-sm font-medium text-gray-700">Num Serie Batterie : <span className="font-bold">{data.device.batteryId}</span></p>
+                    <p className="text-sm font-medium text-gray-700">Num Serie Batterie : <span className="font-bold">{data.device.batterie}</span></p>
                     <p className="text-sm font-medium text-gray-700">Code de produit : <span className="font-bold">{}</span></p>
                     <p className="text-sm font-medium text-gray-700">Sous garantie : <span className="font-bold">{warrantyStatus}</span></p>
                 </div>

@@ -104,7 +104,7 @@ export default function GenerateDech({ discharge, selectedInterventions, onDecha
                             <td className="px-4 py-2 border text-center">{intervention.device?.brand}</td>
                             <td className="px-4 py-2 border text-center">{intervention.device?.model}</td>
                             <td className="px-4 py-2 border text-center">{intervention.device?.imei}</td>
-                            <td className="px-4 py-2 border text-center">{}</td>
+                            <td className="px-4 py-2 border text-center">{intervention.device?.batterie}</td>
                             <td className="px-4 py-2 border text-center">{}</td>
                             <td className="px-4 py-2 border text-center">{intervention.repairType}</td>
                             <td className="px-4 py-2 border text-center">{intervention.status}</td>

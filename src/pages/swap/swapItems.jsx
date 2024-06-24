@@ -40,7 +40,7 @@ export default function SwapItems() {
                                     <td className="px-4 py-2 border text-center">{item.brand}</td>
                                     <td className="px-4 py-2 border text-center">{item.model}</td>
                                     <td className="px-4 py-2 border text-center">{item.imei}</td>
-                                    <td className="px-4 py-2 border text-center">{/* Replace with appropriate field */}</td>
+                                    <td className="px-4 py-2 border text-center">{item.batterie}</td>
                                     <td className="px-4 py-2 border text-center">{item.createdAt}</td>
                                     <td className="px-4 py-2 border text-center">{/* Replace with appropriate field */}</td>
                                     <td className="px-4 py-2 border text-center">

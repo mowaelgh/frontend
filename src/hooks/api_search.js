@@ -49,6 +49,7 @@ const AddIntervention = async (data) => {
     const response = await axios.get(`http://localhost:8080/device/getDeviceById/${data.imei}`);
     return { success: true, data }
 }
+
 const getRepairType = async (id) => {
     try {
         const response = await axios.get(`http://localhost:8080/intervention/getRepairType/${id}`);

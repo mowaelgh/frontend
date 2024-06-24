@@ -2,18 +2,15 @@ import { useState } from "react";
 import axios from 'axios';
 import Layout from "../layout";
 import SearchResult from "./SearchResult";
-import FileCard from "./FileCard";
+import NotFileCard from "./NotFileCard";
 import FicheIntervention from "./FicheIntervention";
-// import { SearchByImei } from "../../hooks/api_search"; // No longer needed as we use Axios directly
+import FileCard from "./FileCard";
+import { AddInterventionStatus } from "../../hooks/api_inter_status";
 
 export default function RecherchePage() {
-    const [deviceId, setDeviceId] = useState('');
-    const [deviceData, setDeviceData] = useState(null);
-    const [error, setError] = useState(null);
 
-
-    const [currentView, setCurrentView] = useState(0)
-    const [searchResultData, setSearchResultData] = useState({})
+    const [currentView, setCurrentView] = useState("0");
+    const [searchResultData, setSearchResultData] = useState({});
     const [clientInfo, setClientInfo] = useState({
         nom: "",
         prenom: "",
@@ -28,47 +25,58 @@ export default function RecherchePage() {
         etatTerminal: "",
         terminalDePret: "",
         workflow: "",
-
     });
-    const [saveResponseData,setSaveResponseData] = useState({})
-
+    const [saveResponseData, setSaveResponseData] = useState({});
+    // const [hasDischargeId, setHasDischargeId] = useState(false);
 
     const search = async (e) => {
-        e.preventDefault()
-        const v = Object.fromEntries(new FormData(e.currentTarget))
-        const imei = v.imei.toString()
-        if (imei === "") return
-        setCurrentView(-1)
+        e.preventDefault();
+        const v = Object.fromEntries(new FormData(e.currentTarget));
+        const imei = v.imei.toString();
+        if (imei === "") return;
+        setCurrentView("loading");
         try {
             const response = await axios.get(`http://localhost:8080/device/getDeviceById/${imei}`);
-            setSearchResultData(response.data);
-            setCurrentView(1);
+            const deviceData = response.data;
+            const r = await checkDischargeStatus(deviceData.imei);
+            deviceData.discharge = r;
+            console.log(deviceData);
+            setSearchResultData(deviceData);
+            setCurrentView("searchResult");
         } catch (error) {
             alert('Device not found or an error occurred.');
-            setCurrentView(0);
+            setCurrentView("");
         }
     }
 
-    const createFile = () => setCurrentView(2)
-    const onCancelFile = () => setCurrentView(1)
+    const checkDischargeStatus = async (imei) => {
+        try {
+            const response = await axios.get(`http://localhost:8080/intervention/hasDischarge/${imei}`);
+            return (response.data);
+        } catch (error) {
+            console.error('Error checking discharge status:', error);
+            return false;
+        }
+    };
+
+    const createFile = () => setCurrentView("fileCard");
+    const onCancelFile = () => setCurrentView("searchResult");
 
     const optionMapper = (v) => {
-        const arr = []
+        const arr = [];
         for (const k in v)
             if (v[k].innerText)
                 arr.push(v[k].innerText ?? "")
-        return arr 
+        return arr;
     }
+
     const saveFile = async (e) => {
         e.preventDefault();
-
         const accessoires = optionMapper(e.target["10"].options);
         const pannes = optionMapper(e.target["12"].options);
-      
-        try {
-            // Prepare the client data to be sent
-            const clientData = {
 
+        try {
+            const clientData = {
                 lastName: clientInfo.nom,
                 firstName: clientInfo.prenom,
                 cin: clientInfo.numCin,
@@ -77,10 +85,9 @@ export default function RecherchePage() {
                 email: clientInfo.email
             };
 
-            // Send the POST request
             const response = await axios.post('http://localhost:8080/client/addClient', clientData);
             const interventionDataToSend = {
-                imei: searchResultData.imei, // Assuming you have this data in searchResultData
+                imei: searchResultData.imei,
                 boutique: interventionData.boutique,
                 batterie: interventionData.batterie,
                 etatTerminal: interventionData.etatTerminal,
@@ -95,16 +102,27 @@ export default function RecherchePage() {
 
             const interventionResponse = await axios.post('http://localhost:8080/intervention/addIntervention', interventionDataToSend);
 
-            setSaveResponseData(interventionResponse.data) 
-
-            setCurrentView(3);
+            setSaveResponseData(interventionResponse.data);
+            setCurrentView("ficheIntervention");
         } catch (error) {
             console.error('Error saving client or intervention:', error);
             alert('An error occurred while saving the client or intervention or accessoires.');
         }
-
     };
 
+    const saveDischarge = async (e) => {
+        const result = await AddInterventionStatus(e);
+        if (result.success) {
+            alert("ok")
+            return
+        }
+        alert("error")
+    }
+
+    const handleShowRemp = () => {
+        console.log("change view");
+        setCurrentView("REMP")
+    }
 
     const handleClientInfoChange = (key, value) => {
         setClientInfo(prevInfo => ({ ...prevInfo, [key]: value }));
@@ -116,7 +134,7 @@ export default function RecherchePage() {
 
     return (
         <Layout>
-            <div className=" flex justify-center">
+            <div className="flex justify-center">
                 <form onSubmit={search} className="mb-3 p-4 flex justify-between items-center w-full bg-orange-500 rounded-lg">
                     <div>
                         <input name="imei" type="text" required placeholder="NUM IMEI" className="px-3 py-2 rounded-lg" />
@@ -126,10 +144,27 @@ export default function RecherchePage() {
                     </div>
                 </form>
             </div>
-            {currentView === -1 && <h2 className="text-center py-10 font-bold">LOADING</h2>}
-            {currentView === 1 && <SearchResult action={createFile} data={searchResultData} />}
-            {currentView === 2 && <FileCard onCancel={onCancelFile} action={saveFile} handleClientInfoChange={handleClientInfoChange} data={searchResultData} handleInterventionDataChange={handleInterventionDataChange} />}
-            {currentView === 3 && <FicheIntervention data={saveResponseData} />}
+
+            {currentView === "loading" && <h2 className="text-center py-10 font-bold">LOADING</h2>}
+            {currentView === "searchResult" && (
+                <SearchResult
+                    data={searchResultData}
+                    onReplaceTerminal={handleShowRemp}
+                    onCreateFile={createFile} // Toggle to show FileCard
+                />
+            )}
+
+            {currentView === "fileCard" && (
+                <FileCard
+                    action={saveFile}
+                    handleClientInfoChange={handleClientInfoChange}
+                    handleInterventionDataChange={handleInterventionDataChange}
+                    data={searchResultData}
+                />
+            )}
+
+            {currentView === "REMP" && (<NotFileCard data={searchResultData} />)}
+            {currentView === "ficheIntervention" && <FicheIntervention data={saveResponseData} />}
         </Layout>
-    )
+    );
 }
