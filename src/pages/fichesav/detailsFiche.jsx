@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { updateFich, getRepairType } from "../../hooks/api_search";
 
+
 export default function DetailsFiche({ info }) {
     const [editableData, setEditableData] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
@@ -11,14 +12,14 @@ export default function DetailsFiche({ info }) {
             if (r.success) {
                 setEditableData([
                     info.createdAt || "",
-                    info.lieu || "",
+                    info.boutique || "bardo",
                     r.data || "", // Use the fetched repair type
                     info.etat || "",
                     info.utilisateur || "",
                     info.commentaire || ""
                 ]);
             } else {
-                alert(r.data);
+                // alert(r.data);
             }
         };
 
@@ -56,7 +57,7 @@ export default function DetailsFiche({ info }) {
             ]);
             setIsEditing(true);
         } else {
-            alert(r.data);
+            // alert(r.data);
         }
     };
 
@@ -87,8 +88,7 @@ export default function DetailsFiche({ info }) {
                                                 type="text"
                                                 value={value}
                                                 onChange={(event) => handleInputChange(index, event)}
-                                                className="px-2 py-1 border border-gray-300 rounded"
-                                            />
+                                                className="px-2 py-1 border border-gray-300 rounded" />
                                         </td>
                                     ))
                                 ) : (

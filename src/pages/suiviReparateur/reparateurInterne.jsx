@@ -113,7 +113,7 @@ export default function RepInterne() {
                                         <td className="px-4 py-2 border text-center">{intervention.device?.model}</td>
                                         <td className="px-4 py-2 border text-center">{intervention.device?.imei}</td>
                                         <td className="px-4 py-2 border text-center">{intervention.device?.batterie}</td>
-                                        <td className="px-4 py-2 border text-center">{}</td>
+                                        <td className="px-4 py-2 border text-center">{intervention.device?.supplier}</td>
                                         <td className="px-4 py-2 border text-center">{intervention.repairType}</td>
                                         <td className="px-4 py-2 border text-center">{intervention.etat}</td>
                                     </tr>

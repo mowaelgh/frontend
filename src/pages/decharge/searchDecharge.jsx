@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Layout from "../layout";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
 import { GetDischargeById } from "../../hooks/api_inter_status";
 
 export default function SearchIntervention() {
@@ -11,16 +10,24 @@ export default function SearchIntervention() {
     const [error, setError] = useState(null);
 
     const handleSearch = async () => {
+        setError(null); // Reset error before new search
+        setInterventionData(null); // Reset data before new search
         if (!dischargeId || isNaN(dischargeId)) {
             setError("Please enter a valid numeric ID");
             return;
         }
-        const result = await GetDischargeById(dischargeId)
-        if (result.success) {
-            setInterventionData(result.data);
-            return
+        try {
+            const result = await GetDischargeById(dischargeId);
+            console.log("API Response:", result); // Log the entire API response
+            if (result.success) {
+                setInterventionData(result.data);
+            } else {
+                setError(result.message || "Error fetching intervention. Please try again.");
+            }
+        } catch (err) {
+            console.error("API Error:", err);
+            setError("An unexpected error occurred. Please try again.");
         }
-        setError("Error fetching intervention. Please try again.");
     };
 
     return (
@@ -43,9 +50,7 @@ export default function SearchIntervention() {
                             <FontAwesomeIcon icon={faSearch} className="mr-2" />
                             Rechercher
                         </button>
-
                     </div>
-
 
                     {error && <p className="text-red-500 mb-4">{error}</p>}
 
@@ -55,24 +60,20 @@ export default function SearchIntervention() {
                             <table className="mt-5 w-full border-collapse">
                                 <tbody>
                                     <tr className="bg-gray-200">
-
                                         <td className="px-4 py-2 border text-center font-bold">Marque</td>
                                         <td className="px-4 py-2 border text-center font-bold">Modele</td>
                                         <td className="px-4 py-2 border text-center font-bold">N'Serie</td>
                                         <td className="px-4 py-2 border text-center font-bold">N'Serie batterie</td>
                                         <td className="px-4 py-2 border text-center font-bold">Fournisseur</td>
                                         <td className="px-4 py-2 border text-center font-bold">Date</td>
-
                                     </tr>
                                     <tr>
-
                                         <td className="px-4 py-2 border text-center">{interventionData.device.brand}</td>
                                         <td className="px-4 py-2 border text-center">{interventionData.device.model}</td>
                                         <td className="px-4 py-2 border text-center">{interventionData.device.imei}</td>
                                         <td className="px-4 py-2 border text-center">{interventionData.device.batterie}</td>
-                                        <td className="px-4 py-2 border text-center">{ }</td>
+                                        <td className="px-4 py-2 border text-center">{interventionData.device.supplier}</td>
                                         <td className="px-4 py-2 border text-center">{interventionData.createdAt}</td>
-
                                     </tr>
                                 </tbody>
                             </table>

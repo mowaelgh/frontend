@@ -9,6 +9,14 @@ const GetDischargeById = async (id) => {
     }
 }
 
+const AddSwap = async (data) => {
+    try {
+        const response = await axios.post(`http://localhost:8080/swap/addSwap`, data);
+        return { success: true, response }
+    } catch (error) {
+        return { success: false, error }
+    }
+}
 const AddInterventionStatus = async (data) => {
     try {
         const response = await axios.post(`http://localhost:8080/interventionStatus/addInterventionStatus`, data);
@@ -18,4 +26,4 @@ const AddInterventionStatus = async (data) => {
     }
 }
 
-export { AddInterventionStatus, GetDischargeById }
+export { AddInterventionStatus, GetDischargeById, AddSwap }

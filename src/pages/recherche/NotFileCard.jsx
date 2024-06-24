@@ -13,12 +13,13 @@ export default function NotFileCard({ data }) {
 
     const saveInvStatus = async (e) => {
         console.log(data);
+        
         // return
         const r = await AddInterventionStatus({
             amount: e.amount,
             marque: intStatus.brand,
             modele: intStatus.model,
-            newIMEI: e.newIMEI,
+            newIMEI: data.imei,
             intervention_id: 502,
             local: data.boutique,
             createdAt: (new Date()),
