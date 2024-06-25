@@ -6,7 +6,7 @@ import RechercherPage from "./pages/recherche";
 import ConsulteSav from "./pages/fichesav/Verification";
 import RepExterne from "./pages/suiviReparateur/reparateurExterne";
 import RecuExterne from "./pages/suiviReparateur/recuExterne";
-import Sinistre from "./pages/FicheSinistre/sinistre";
+import InterventionSearch from "./pages/bonsav/searchBon";
 import RepInterne from "./pages/suiviReparateur/reparateurInterne";
 import RecuInterne from "./pages/suiviReparateur/recuInterne";
 import Decharge from "./pages/decharge/searchDecharge";
@@ -22,7 +22,7 @@ export default function CustomRoutes() {
         { path: "/", element: <Home />, loader: withAuth },
         { path: "/recherche", element: <RechercherPage />, loader: withAuth },
         { path: "/Consulte", element: <ConsulteSav />, loader: withAuth },
-        { path: "/sinistre", element: <Sinistre />, loader: withAuth },
+        { path: "/bonsav", element: <InterventionSearch />, loader: withAuth },
         { path: "/externe", element: <RepExterne /> , loader: withAuth },
         { path: "/recuExterne", element: <RecuExterne /> , loader: withAuth },
         { path: "/recuInterne", element: <RecuInterne /> , loader: withAuth },

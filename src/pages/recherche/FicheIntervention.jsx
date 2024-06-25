@@ -50,7 +50,7 @@ const toPrint = () => {
                 </p>
                 {/* Date and Boutique */}
                 <div>
-                    <p className="text-sm font-medium text-gray-700">Date : <span className="font-bold">{data.createdAt}</span></p>
+                    <p className="text-sm font-medium text-gray-700">Date : <span className="font-bold">{new Date(data.createdAt).toLocaleDateString()}</span></p>
                     <p className="text-sm font-medium text-gray-700">Boutique : <span className="font-bold">{data.device?.boutique}</span></p>
                 </div>
             </div>
@@ -75,7 +75,7 @@ const toPrint = () => {
             <div className="flex justify-between mb-4">
                 {/* Left side */}
                 <div className="w-1/2 pr-4">
-                    <p className="text-sm font-medium text-gray-700">Date d'achat : <span className="font-bold">{data.device.purchase_date}</span></p>
+                    <p className="text-sm font-medium text-gray-700">Date d'achat : <span className="font-bold">{new Date(data.device.purchase_date).toLocaleDateString()}</span></p>
                     <p className="text-sm font-medium text-gray-700">Marque : <span className="font-bold">{data.device.brand}</span></p>
                     <p className="text-sm font-medium text-gray-700">Num serie/IMEI : <span className="font-bold">{data.device.imei}</span></p>
                     <p className="text-sm font-medium text-gray-700">Num Serie Batterie : <span className="font-bold">{data.device.batterie}</span></p>

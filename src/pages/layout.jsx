@@ -12,7 +12,7 @@ let menus = [
     { name: "Recherche", link: `/recherche`, icon: CiSearch },
     { name: "Consulter Fiche SAV", link: `/consulte`, icon: CiViewBoard },
     { name: "Consulter Fiche Sinistre", link: `/sinistre`, icon: CiViewBoard },
-    { name: "Consulter bon SAV", link: `/`, icon: CiViewBoard },
+    { name: "Consulter bon SAV", link: `/bonsav`, icon: CiViewBoard },
     { name: "Recherche Decharge", link: `/decharge`, icon: CiSearch },
     {
         name: "Suivi point de collecte",

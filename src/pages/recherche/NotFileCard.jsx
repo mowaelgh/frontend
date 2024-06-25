@@ -237,7 +237,7 @@ const View3 = ({ data1, data2 }) => {
                 </p>
                 {/* Date and Boutique */}
                 <div>
-                    <p className="text-sm font-medium text-gray-700">Date : <span className="font-bold">{data2.created_at}</span></p>
+                    <p className="text-sm font-medium text-gray-700">Date : <span className="font-bold">{new Date(data2.created_at).toLocaleDateString()}</span></p>
                     <p className="text-sm font-medium text-gray-700">Boutique : <span className="font-bold">{data1.boutique}</span></p>
                 </div>
             </div>
@@ -263,7 +263,7 @@ const View3 = ({ data1, data2 }) => {
             <div className="flex justify-between mb-4">
                 {/* Left side */}
                 <div className="w-1/2 pr-4">
-                    <p className="text-sm font-medium text-gray-700">Date d'achat : <span className="font-bold">{data1.purchase_date}</span></p>
+                    <p className="text-sm font-medium text-gray-700">Date d'achat : <span className="font-bold">{new Date(data1.purchase_date).toLocaleDateString()}</span></p>
                     {/* type */}
                     <p className="text-sm font-medium text-gray-700">Marque : <span className="font-bold">{data1.brand}</span></p>
                     <p className="text-sm font-medium text-gray-700">Modèle : <span className="font-bold">{data1.model}</span></p>

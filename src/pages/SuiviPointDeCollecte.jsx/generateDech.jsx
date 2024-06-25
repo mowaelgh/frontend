@@ -36,7 +36,7 @@ export default function GenerateDech({ interventionStatus, destination }) {
                 </div>
                 <div>
                     <p className="text-sm font-medium text-gray-700 mb-2">
-                        Date : <span className="font-bold">{interventionStatus ? interventionStatus.createdAt : 'Loading...'}</span>
+                        Date : <span className="font-bold">{new Date(interventionStatus ? interventionStatus.createdAt : 'Loading...').toLocaleDateString()}</span>
                     </p>
                 </div>
             </div>

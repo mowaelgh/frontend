@@ -59,7 +59,7 @@ export default function SearchResult({ data, onReplaceTerminal, onCreateFile }) 
                 <hr className="w-20 border-2 border-gray-600" />
                 <div className="flex flex-col">
                     <p>Etat: <b>{data.status}</b></p>
-                    <p>Date d'achat: <b>{data.purchase_date}</b></p>
+                    <p>Date d'achat: <b>{new Date(data.purchase_date).toLocaleDateString()}</b></p>
                     <p>Durée de garantie: <b>{data.guarantee} <span>mois</span></b></p>
                     <p>Reste de la durée de garantie: <b>{remainingWarranty} <span>mois</span></b></p>
                     <p>Nombre de retour SAV: <b>{data.nbRetourSav}</b></p>

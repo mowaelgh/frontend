@@ -51,7 +51,7 @@ export default function Produit({ info, selectedOption }) {
                                         {selectedOption === "NFICH" && info.id}
                                         {selectedOption === "IMEI" && info.imei}
                                     </td>
-                                    <td className="px-4 py-2 border text-center">{info.createdAt}</td>
+                                    <td className="px-4 py-2 border text-center">{new Date(info.createdAt).toLocaleDateString()}</td>
                                     <td className="px-4 py-2 border text-center">{info.status}</td>
                                 </tr>
                             </tbody>

@@ -80,7 +80,7 @@ export default function GenerateDech({ discharge, selectedInterventions, onDecha
                 </div>
                 <div>
                     <p className="text-sm font-medium text-gray-700 mb-2">
-                        Date : <span className="font-bold">{discharge.createdAt}</span>
+                        Date : <span className="font-bold">{new Date(discharge.createdAt).toLocaleDateString()}</span>
                     </p>
                 </div>
             </div>
