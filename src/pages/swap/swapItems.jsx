@@ -4,9 +4,9 @@ import Layout from "../layout";
 
 export default function SwapItems({ data, onReplaceTerminal }) {
     const [interventionData, setInterventionData] = useState([]);
-    const [selectedDevice, setSelectedDevice] = useState(null); // Add a state for selected device
+    const [selectedDevice, setSelectedDevice] = useState(null);
     const [showPopup, setShowPopup] = useState(false);
-    const [showForm, setShowForm] = useState(false); // Add a state for form visibility
+    const [showForm, setShowForm] = useState(false);
     const [showTicket, setShowTicket] = useState(false);
     const [ticketData, setTicketData] = useState(null);
 
@@ -37,14 +37,14 @@ export default function SwapItems({ data, onReplaceTerminal }) {
     }, [data]);
 
     const handleReplaceTerminal = (device) => {
-        setSelectedDevice(device); // Set the selected device
+        setSelectedDevice(device);
         setShowPopup(true);
-        setShowForm(false); // Ensure the form is not shown initially
+        setShowForm(false);
     };
 
     const handleCancel = () => {
         setShowPopup(false);
-        setShowForm(false); // Reset form visibility
+        setShowForm(false);
     };
 
     const handleConfirm = () => {
@@ -67,11 +67,12 @@ export default function SwapItems({ data, onReplaceTerminal }) {
             marque: selectedDevice.brand,
             modele: selectedDevice.model,
             date: new Date().toLocaleDateString(),
-            prix: 'amount'  // Replace this with the actual amount if available
+            prix: selectedDevice.price
         };
         setTicketData(ticketDetails);
         setShowTicket(true);
     };
+
     const toPrint = () => {
         // Open a new window for printing
         var mywindow = window.open('', 'PRINT', 'height=400,width=600');
@@ -97,6 +98,9 @@ export default function SwapItems({ data, onReplaceTerminal }) {
     
         return true;
     }
+    
+    
+
 
     return (
         <Layout>
@@ -137,7 +141,7 @@ export default function SwapItems({ data, onReplaceTerminal }) {
                             </table>
                         </div>
                     </div>
-                    {showPopup && selectedDevice && (
+                    {showPopup && selectedDevice &&  (
                         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-[#0000005c]">
                             <div className="bg-white rounded-lg p-8 shadow-lg">
                                 {!showForm ? (
@@ -224,9 +228,7 @@ export default function SwapItems({ data, onReplaceTerminal }) {
                             <p><strong>Prix:</strong> {ticketData.prix}</p>
                         </div>
                         <div id="impBtn" className="flex justify-center">
-                        
-                           <button onClick={toPrint} className="bg-blue-500 text-white px-4 py-2 rounded-lg">Imprimer</button>
-           
+                            <button onClick={toPrint} className="bg-blue-500 text-white px-4 py-2 rounded-lg">Imprimer</button>
                             <button onClick={() => setShowTicket(false)} className="bg-gray-400 text-white px-4 py-2 rounded-lg">Fermer</button>
                         </div>
                     </div>
